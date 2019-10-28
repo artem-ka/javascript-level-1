@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var num = parseInt(prompt('Введите число от 0 до 999'));
+        var x = parseInt(num/100);
+        var y = parseInt((num-x*100)/10);
+        var z = num-x*100-y*10;
+        var obj = {};
+        function numToObj(num){
+            if(num>=0&&num<=999){
+                obj.ed = 'единицы: '+z;
+                obj.des = 'десятки: '+y;
+                obj.sot = 'сотни: '+x;
+            }
+            else{
+                console.log('Введено некорректное значение');
+            }
+            return obj;
+        }
+        console.log(numToObj(num));
+    </script>
+</body>
+
+</html>
