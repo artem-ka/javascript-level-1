@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <style>
+        .divImgSmall {
+            width: 1300px;
+            min-height: 300px;
+            margin: 0 auto 50px auto;
+            border: none;
+        }
+
+        .imgSmall {
+            width: 400px;
+            min-height: 300px;
+            margin: 0 50px 0 0;
+            border: none;
+        }
+
+        div img:last-of-type {
+            margin: 0;
+        }
+
+        .divImgBig {
+            width: 800px;
+            min-height: 600px;
+            margin: 0 auto;
+        }
+
+        .imgBig {
+            width: 800px;
+            min-height: 600px;
+            border: none;
+        }
+        .arrows {
+            width: 250px;
+            min-height: 110px;
+            margin: 20px auto 0 auto;
+        }
+        #al, #ar {
+            width: 96px;
+            min-height: 96px;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        //Создаю массивы с путями к файлам картинок. Для удобства картинки названы одним и тем же словом (большие - big, маленькие - small), имена отличаются только цифрой, которую удобно брать из индекса массива.
+        var imagesSmall = [];
+        for (var i = 0; i < 3; i++) {
+            imagesSmall[i] = "img/small" + i + ".jpg";
+        }
+        var imagesBig = [];
+        for (i = 0; i < 3; i++) {
+            imagesBig[i] = "img/big" + i + ".jpg";
+        }
+        //Создаю блок с маленькими картинками, добавляю ему минимальный набор стилей через класс с css-свойствами, заданными в <style></style>.
+        var divImagesSmall = document.createElement("div");
+        divImagesSmall.className = 'divImgSmall';
+        document.body.appendChild(divImagesSmall);
+        //Заполняю верхний <div> картинками с путями к файлам из массива, перебираемого в цикле.
+        for (i = 0; i < imagesSmall.length; i++) {
+            var imageSmall = document.createElement("img");
+            imageSmall.className = 'imgSmall';
+            imageSmall.setAttribute('src', imagesSmall[i]);
+            imageSmall.setAttribute('id', 'imgid' + i);
+            divImagesSmall.appendChild(imageSmall);
+        }
+        //Создаю блок для большой картинки, добавляю ему минимальный набор стилей через класс с css-свойствами, заданными в <style></style>.
+        var divImageBig = document.createElement("div");
+        divImageBig.className = 'divImgBig';
+        document.body.appendChild(divImageBig);
+        //По клику на соответствующую маленькую картинку в верхнем ряду, вставляю большую картинку в нижний блок.
+        for (i in imagesSmall) {
+                document.getElementById('imgid' + i).onclick = function() {
+                var strToArr = this.id.split('');
+                var n = strToArr[5];
+                var imageBig = document.createElement("img");
+                imageBig.className = 'imgBig';
+                imageBig.setAttribute('src', imagesBig[n]);
+                imageBig.setAttribute('id', 'ib' + n);
+                imageBig.setAttribute('alt', 'Файл не найден');
+                var childOfDiv = divImageBig.querySelector('img');
+                if (childOfDiv == null) {
+                    divImageBig.appendChild(imageBig);
+                } else {
+                    divImageBig.replaceChild(imageBig, childOfDiv);
+                }
+            }
+        }
+        //Создаю блок со стрелками
+        var divArrows = document.createElement("div");
+        divArrows.className = 'arrows';
+        document.body.appendChild(divArrows);
+        var arrowLeft = document.createElement("img");
+        arrowLeft.setAttribute('src', 'img/arrow_left.png');
+        arrowLeft.setAttribute('id', 'al');
+        divArrows.appendChild(arrowLeft);
+        var arrowRight = document.createElement("img");
+        arrowRight.setAttribute('src', 'img/arrow_right.png');
+        arrowRight.setAttribute('id', 'ar');
+        divArrows.appendChild(arrowRight);
+        //Назначаю стрелкам обработчик события onclick
+        document.getElementById('al').onclick = function(){
+            var pathToImg = divImageBig.querySelector('img').id;
+            var strToArr2 = pathToImg.split('');
+            var numOfImg = parseInt(strToArr2[2]);
+            numOfImg --;
+            if(numOfImg<0){
+                numOfImg = 0;
+            }
+            divImageBig.querySelector('img').src = 'img/big' + numOfImg + '.jpg';
+            divImageBig.querySelector('img').id = 'ib' + numOfImg;
+        }
+        document.getElementById('ar').onclick = function(){
+            var pathToImg = divImageBig.querySelector('img').id;
+            var strToArr2 = pathToImg.split('');
+            var numOfImg = parseInt(strToArr2[2]);
+            numOfImg ++;
+            if(numOfImg >= imagesSmall.length){
+                numOfImg = imagesSmall.length - 1;
+            }
+            divImageBig.querySelector('img').src = 'img/big' + numOfImg + '.jpg';
+            divImageBig.querySelector('img').id = 'ib' + numOfImg;
+        }
+    </script>
+</body>
+
+</html>
