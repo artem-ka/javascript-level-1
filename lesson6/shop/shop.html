@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Shop</title>
+    <style>
+        .basket {
+            width: 1416px;
+            margin: 0 auto 50px auto;
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .product {
+            width: 400px;
+            margin: 0 25px 0 25px;
+            padding: 10px;
+            border: 1px solid black;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .product_price {
+            display: block;
+            padding: 5px;
+        }
+
+        .product_info {
+            display: block;
+            width: 600px;
+            margin: 5px auto 5px auto;
+            padding: 5px;
+            border: 1px solid black;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script>
+        //Создаю верхний блок для корзины
+        var divBasket = document.createElement("div");
+        divBasket.className = 'basket';
+        document.body.appendChild(divBasket);
+
+        //Создаю нижний блок для каталога товаров
+        var divProducts = document.createElement("div");
+        divProducts.className = 'basket';
+        document.body.appendChild(divProducts);
+        //Создаю массив объектов товаров
+        var products = [{
+                pid: 'p0',
+                title: 'IPhone',
+                image: 'img/img0.jpg',
+                price: 40000,
+                btnid: 'btn0'
+            },
+            {
+                pid: 'p1',
+                title: 'Samsung',
+                image: 'img/img1.jpg',
+                price: 30000,
+                btnid: 'btn1'
+            },
+            {
+                pid: 'p2',
+                title: 'HTC',
+                image: 'img/img2.jpg',
+                price: 20000,
+                btnid: 'btn2'
+            }
+        ];
+        //Начинаю с объявления переменной с общей суммой, по умолчанию равной нулю
+        var sumTotal = 0;
+        //Инициализирую пустые массивы, где будет количество каждого заказанного товара и стоимость по каждому товару
+        var q = [];
+        var sumPart = [];
+        //Создаю блоки в каталоге товаров и заполняю их данными из массива товаров
+        for (var i in products) {
+            var divProduct = document.createElement('div');
+            divProduct.className = 'product';
+            divProducts.appendChild(divProduct);
+            divProduct.id = products[i].pid;
+            var productTitle = document.createElement('h1');
+            productTitle.innerText = products[i].title;
+            divProduct.appendChild(productTitle);
+            var productImage = document.createElement('img');
+            productImage.src = products[i].image;
+            divProduct.appendChild(productImage);
+            var productPrice = document.createElement('span');
+            productPrice.className = 'product_price';
+            productPrice.innerText = products[i].price;
+            divProduct.appendChild(productPrice);
+            var productButton = document.createElement('button');
+            productButton.id = products[i].btnid;
+            productButton.innerText = 'Купить';
+            divProduct.appendChild(productButton);
+            //Присваиваю каждому элементу массивов, где будет количество каждого заказанного товара и стоимость по каждому товару, значения по умолчанию
+            q[i] = 0;
+            sumPart[i] = 0;
+            //Создаю строки в блоке корзины с информацией о заказанных товарах
+            var productInfo = document.createElement('span');
+            productInfo.className = 'product_info';
+            productInfo.id = 'pi' + i;
+            productInfo.innerText = productTitle.innerText + ' - ' + q[i] + ' шт., сумма ' + sumPart[i] + ' руб.';
+            divBasket.appendChild(productInfo);
+        }
+        //Создаю строку в блоке корзины с информацией об общем количестве заказанных товаров и их общей стоимости
+        var productsAllInfo = document.createElement('span');
+        productsAllInfo.className = 'product_info';
+        productsAllInfo.id = 'pai';
+        productsAllInfo.innerText = 'Общая стоимость заказанных товаров равна ' + sumTotal + ' руб.';
+        divBasket.appendChild(productsAllInfo);
+        //Создаю обработчик события клика по кнопке "Купить"
+        for (i in products) {
+            document.getElementById('btn' + i).onclick = function() {
+                var idToArr = this.id.split('');
+                var n = idToArr[3];
+                q[n]++;
+                sumPart[n] += products[n].price;
+                document.getElementById('pi' + n).innerText = productTitle.innerText + ' - ' + q[n] + ' шт., сумма ' + sumPart[n] + ' руб.';
+                sumTotal += products[n].price;
+                document.getElementById('pai').innerText = 'Общая стоимость заказанных товаров равна ' + sumTotal + ' руб.';
+            }
+        }
+        
+
+    </script>
+</body>
+
+</html>
